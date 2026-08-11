@@ -96,7 +96,6 @@ jobs:
     name: Merge & Deploy Docker
     runs-on: ubuntu-latest
     if: |
-      github.event_name == 'workflow_dispatch' ||
       startsWith(github.ref, 'refs/tags/v')
     permissions:
       packages: write
@@ -157,7 +156,6 @@ jobs:
     name: Build & Deploy Docs
     runs-on: ubuntu-latest
     if: |
-      github.event_name == 'workflow_dispatch' ||
       startsWith(github.ref, 'refs/tags/v')
     permissions:
       contents: write
