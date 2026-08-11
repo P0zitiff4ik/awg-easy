@@ -76,7 +76,8 @@ jobs:
           context: .
           platforms: ${{ matrix.arch.platform }}
           labels: ${{ steps.meta.outputs.labels }}
-          tags: ${{ env.IMAGE_REPOSITORY }}
+          tags: |
+            ${{ env.IMAGE_REPOSITORY }}:latest
           outputs: type=image,push-by-digest=true,name-canonical=true,push=true
           cache-from: type=gha,scope=build-${{ env.PLATFORM_PAIR }}
           cache-to: type=gha,mode=min,scope=build-${{ env.PLATFORM_PAIR }}
