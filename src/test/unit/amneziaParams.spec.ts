@@ -31,13 +31,13 @@ describe('AmneziaWG 3+ parameter validation', () => {
       enabled: true,
       firewallEnabled: false,
       headerProtectionKey: 'test-key',
-      contentPaddingAddition: 32,
+      contentPaddingAddition: '32-64',
       rekeyAfterTime: 120,
       rekeyTimeout: 60,
     });
 
     expect(result.headerProtectionKey).toBe('test-key');
-    expect(result.contentPaddingAddition).toBe(32);
+    expect(result.contentPaddingAddition).toBe('32-64');
     expect(result.rekeyAfterTime).toBe(120);
     expect(result.rekeyTimeout).toBe(60);
   });
@@ -59,13 +59,13 @@ describe('AmneziaWG 3+ parameter validation', () => {
       defaultI5: null,
       host: 'example.com',
       headerProtectionKey: 'config-key',
-      contentPaddingAddition: 16,
+      contentPaddingAddition: '16-32',
       rekeyAfterTime: 90,
       rekeyTimeout: 30,
     });
 
     expect(result.headerProtectionKey).toBe('config-key');
-    expect(result.contentPaddingAddition).toBe(16);
+    expect(result.contentPaddingAddition).toBe('16-32');
     expect(result.rekeyAfterTime).toBe(90);
     expect(result.rekeyTimeout).toBe(30);
   });

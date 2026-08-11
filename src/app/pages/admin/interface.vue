@@ -54,7 +54,7 @@
           label="Header Protection Key"
           description="Optional AmneziaWG header protection key"
         />
-        <FormNullNumberField
+        <FormNullTextField
           id="contentPaddingAddition"
           v-model="data.contentPaddingAddition"
           label="Content Padding Addition"

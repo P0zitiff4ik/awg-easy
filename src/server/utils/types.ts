@@ -65,8 +65,6 @@ export const HSchema = z
 
       const [min, max] = v.split('-').map(Number);
       return min && max && min >= H_MIN && max <= H_MAX && min <= max;
-
-      return false;
     },
     {
       message: t('zod.generic.validNumberRange'),
@@ -78,6 +76,49 @@ export const HSchema = z
     const [min, max] = v.split('-').map(Number);
     return min === max ? `${min}` : `${min}-${max}`;
   })
+  .nullable();
+
+const CONTENT_PADDING_MIN = 0;
+const CONTENT_PADDING_MAX = 2 ** 31 - 1;
+
+export const ContentPaddingAdditionSchema = z
+  .union([
+    z.number({ message: t('zod.generic.validNumberRange') })
+      .int()
+      .min(CONTENT_PADDING_MIN, { message: t('zod.generic.validNumberRange') })
+      .max(CONTENT_PADDING_MAX, { message: t('zod.generic.validNumberRange') }),
+    z.string({ message: t('zod.generic.validNumberRange') })
+      .transform((v) => v.replace(/\s+/g, ''))
+      .refine(
+        (v) => {
+          if (!v) return false;
+          if (!/^\d+(-\d+)?$/.test(v)) return false;
+          if (!v.includes('-')) {
+            const num = Number(v);
+            return num >= CONTENT_PADDING_MIN && num <= CONTENT_PADDING_MAX;
+          }
+
+          const [min, max] = v.split('-').map(Number);
+          return (
+            Number.isInteger(min) &&
+            Number.isInteger(max) &&
+            min >= CONTENT_PADDING_MIN &&
+            max <= CONTENT_PADDING_MAX &&
+            min <= max
+          );
+        },
+        {
+          message: t('zod.generic.validNumberRange'),
+        }
+      )
+      .transform((v) => {
+        if (!v.includes('-')) return `${Number(v)}`;
+
+        const [min, max] = v.split('-').map(Number);
+        return min === max ? `${min}` : `${min}-${max}`;
+      }),
+  ])
+  .transform((value) => String(value))
   .nullable();
 
 export const ISchema = z

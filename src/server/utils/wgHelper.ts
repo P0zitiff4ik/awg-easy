@@ -54,6 +54,14 @@ AllowedIPs = ${allowedIps.join(', ')}${extraLines.length ? `\n${extraLines.join(
     const ipv4Addr = stringifyIp({ number: cidr4.start + 1n, version: 4 });
     const ipv6Addr = stringifyIp({ number: cidr6.start + 1n, version: 6 });
 
+    const hasHeaderProtection = Boolean(
+      wgInterface.headerProtectionKey &&
+        Number.isInteger(wgInterface.s1) &&
+        Number.isInteger(wgInterface.s2) &&
+        Number.isInteger(wgInterface.s3) &&
+        Number.isInteger(wgInterface.s4)
+    );
+
     const address =
       `${ipv4Addr}/${cidr4.prefix}` +
       (enableIpv6 ? `, ${ipv6Addr}/${cidr6.prefix}` : '');
@@ -91,7 +99,7 @@ AllowedIPs = ${allowedIps.join(', ')}${extraLines.length ? `\n${extraLines.join(
       `ListenPort = ${wgInterface.port}`,
       `MTU = ${wgInterface.mtu}`,
       `Table = ${wgInterface.routingTable}`,
-      ...(wgInterface.headerProtectionKey
+      ...(hasHeaderProtection
         ? [`HeaderProtectionKey = ${wgInterface.headerProtectionKey}`]
         : []),
       ...(wgInterface.contentPaddingAddition !== null &&
@@ -179,12 +187,19 @@ PostDown = ${iptablesTemplate(hooks.postDown, wgInterface)}`;
     const rekeyAfterTime =
       userConfig.rekeyAfterTime ?? wgInterface.rekeyAfterTime;
     const rekeyTimeout = userConfig.rekeyTimeout ?? wgInterface.rekeyTimeout;
+    const useHeaderProtection = Boolean(
+      headerProtectionKey &&
+        Number.isInteger(wgInterface.s1) &&
+        Number.isInteger(wgInterface.s2) &&
+        Number.isInteger(wgInterface.s3) &&
+        Number.isInteger(wgInterface.s4)
+    );
 
     const interfaceLines = [
       `PrivateKey = ${client.privateKey}`,
       `Address = ${address}`,
       `MTU = ${client.mtu}`,
-      ...(headerProtectionKey
+      ...(useHeaderProtection
         ? [`HeaderProtectionKey = ${headerProtectionKey}`]
         : []),
       ...(contentPaddingAddition !== null && contentPaddingAddition !== undefined
