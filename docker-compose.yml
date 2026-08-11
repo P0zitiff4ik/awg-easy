@@ -9,7 +9,7 @@ services:
     #  - HOST=0.0.0.0
     #  - INSECURE=false
 
-    image: ${WG_EASY_IMAGE:-ghcr.io/P0zitiff4ik/awg-easy:latest}
+    image: ${WG_EASY_IMAGE:-ghcr.io/p0zitiff4ik/awg-easy:latest}
     container_name: wg-easy
     networks:
       wg:
