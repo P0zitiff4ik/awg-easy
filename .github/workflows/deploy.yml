@@ -140,6 +140,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Login to Codeberg
+        if: ${{ secrets.CODEBERG_USER != '' && secrets.CODEBERG_PASS != '' }}
         uses: docker/login-action@dbcb813823bdd20940b903addbd779551569679f # v4
         with:
           registry: codeberg.org
