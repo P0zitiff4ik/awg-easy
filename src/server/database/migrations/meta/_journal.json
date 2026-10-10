@@ -64,6 +64,20 @@
       "when": 1785630544323,
       "tag": "0008_amnezia_wg_params",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "6",
+      "when": 1788760134302,
+      "tag": "0009_thin_patch",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "6",
+      "when": 1790082534310,
+      "tag": "0010_dusty_prodigy",
+      "breakpoints": true
     }
   ]
 }
