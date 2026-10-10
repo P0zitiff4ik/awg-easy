@@ -162,7 +162,9 @@ PostDown = ${iptablesTemplate(hooks.postDown, wgInterface)}`;
     );
 
     return `[Interface]
-${interfaceLines.join('\n')}
+PrivateKey = ${client.privateKey}
+Address = ${address}
+MTU = ${client.mtu}
 ${extraLines.length ? `${extraLines.join('\n')}\n` : ''}
 [Peer]
 PublicKey = ${wgInterface.publicKey}
