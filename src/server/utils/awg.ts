@@ -1,5 +1,27 @@
+import { randomInt } from 'node:crypto';
+
 import type { ClientType } from '#db/repositories/client/types';
 import type { InterfaceType } from '#db/repositories/interface/types';
+
+const CLIENT_JC_MIN = 1;
+const CLIENT_JC_MAX = 128;
+const CLIENT_JMIN_MIN = 0;
+const CLIENT_JMIN_MAX = 1279;
+const CLIENT_JMAX_MAX = 1280;
+
+/** Generate per-client junk-train values within AmneziaWG's supported limits. */
+export function randomizeClientJunkParameters(): Pick<
+  ClientType,
+  'jC' | 'jMin' | 'jMax'
+> {
+  const jMin = randomInt(CLIENT_JMIN_MIN, CLIENT_JMIN_MAX + 1);
+
+  return {
+    jC: randomInt(CLIENT_JC_MIN, CLIENT_JC_MAX + 1),
+    jMin,
+    jMax: randomInt(jMin + 1, CLIENT_JMAX_MAX + 1),
+  };
+}
 
 /**
  * A parameter written as `Key = value` into the `[Interface]` section of a

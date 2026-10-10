@@ -4,6 +4,7 @@ import {
   buildAwgLines,
   clientAwgParameters,
   interfaceAwgParameters,
+  randomizeClientJunkParameters,
 } from '#server/utils/awg';
 import { InterfaceUpdateSchema } from '#db/repositories/interface/types';
 import { AwgRangeSchema, HSchema, KeySchema } from '#server/utils/types';
@@ -125,6 +126,21 @@ describe('AmneziaWG config lines', () => {
 
     expect(lines).not.toContain('Jc = 7');
     expect(lines).not.toContain('MaxHandshakeAttempts = 9');
+  });
+});
+
+describe('randomizeClientJunkParameters', () => {
+  test('generates valid per-client junk-train values', () => {
+    for (let i = 0; i < 100; i++) {
+      const { jC, jMin, jMax } = randomizeClientJunkParameters();
+
+      expect(jC).toBeGreaterThanOrEqual(1);
+      expect(jC).toBeLessThanOrEqual(128);
+      expect(jMin).toBeGreaterThanOrEqual(0);
+      expect(jMin).toBeLessThanOrEqual(1279);
+      expect(jMax).toBeGreaterThan(jMin);
+      expect(jMax).toBeLessThanOrEqual(1280);
+    }
   });
 });
 

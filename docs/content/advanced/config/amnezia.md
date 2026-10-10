@@ -57,6 +57,12 @@ If a parameter is not set, it will not be added to the configuration. If all Amn
 | MaxHandshakeAttempts   | :white_check_mark: Yes               | :white_check_mark:     | :white_check_mark:       |
 | DisableCookies         | :white_check_mark: Yes               | :white_check_mark:     | :white_check_mark:       |
 
+When AmneziaWG is active, newly created clients receive randomized `Jc`,
+`Jmin` and `Jmax` values: `Jc` from 1–128, `Jmin` from 0–1279, and `Jmax`
+from `Jmin + 1`–1280. These limits follow the AmneziaWG protocol; `Jmax` is
+always greater than `Jmin`. With standard WireGuard, clients continue to use
+the configured defaults.
+
 ### AmneziaWG 3.0 and 3.1 Parameters
 
 These parameters require AmneziaWG 3.0 or newer on both ends of the tunnel. Older clients reject configurations that contain them, so leave them unset if you still support AmneziaWG 2.x clients.

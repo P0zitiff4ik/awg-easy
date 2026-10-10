@@ -14,6 +14,7 @@ import Database from '#server/utils/Database';
 import { nextIP } from '#server/utils/ip';
 import type { ID } from '#server/utils/types';
 import { wg } from '#server/utils/wgHelper';
+import { randomizeClientJunkParameters } from '#server/utils/awg';
 import type { DBType } from '#db/sqlite';
 import { wgInterface, userConfig } from '#db/schema';
 
@@ -204,6 +205,14 @@ export class ClientService {
       const ipv4Address = nextIP(4, ipv4Cidr, clients);
       const ipv6Cidr = parseCidr(clientInterface.ipv6Cidr);
       const ipv6Address = nextIP(6, ipv6Cidr, clients);
+      const junkParameters =
+        WG_ENV.WG_EXECUTABLE === 'awg'
+          ? randomizeClientJunkParameters()
+          : {
+              jC: clientConfig.defaultJC,
+              jMin: clientConfig.defaultJMin,
+              jMax: clientConfig.defaultJMax,
+            };
 
       return await tx
         .insert(client)
@@ -219,9 +228,7 @@ export class ClientService {
           ipv4Address,
           ipv6Address,
           mtu: clientConfig.defaultMtu,
-          jC: clientConfig.defaultJC,
-          jMin: clientConfig.defaultJMin,
-          jMax: clientConfig.defaultJMax,
+          ...junkParameters,
           i1: clientConfig.defaultI1,
           i2: clientConfig.defaultI2,
           i3: clientConfig.defaultI3,
